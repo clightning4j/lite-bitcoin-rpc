@@ -6,11 +6,18 @@ import io.github.clightning4j.litebtc.model.generic.Configuration;
 import io.github.clightning4j.litebtc.model.generic.Parameters;
 import io.github.clightning4j.litebtc.utils.gson.JsonConverter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.net.HttpURLConnection;
 
 public class HttpFactory {
 
@@ -64,11 +71,16 @@ public class HttpFactory {
             .build();
     try {
       Response response = this.client.newCall(request).execute();
-      if (!response.isSuccessful()) {
-        LOGGER.error("Request error with code: " + response.code());
-        throw new UtilsExceptions("Request error: " + response.code());
-      }
       ResponseBody body = response.body();
+      if (!response.isSuccessful()) {
+        String message = "";
+        LOGGER.error("Request error with code: " + response.code());
+        if (body != null) {
+          message = body.string();
+          LOGGER.debug("Response Body\n" + message);
+        }
+        throw new UtilsExceptions("Request error: " + response.code() +  "Body: " + message);
+      }
       if (body != null) {
         String responseStr = body.string();
         LOGGER.debug("Response from bitcoind\n" + responseStr);
@@ -77,6 +89,53 @@ public class HttpFactory {
       }
       LOGGER.error("body response null");
       throw new UtilsExceptions("body response null");
+    } catch (IOException e) {
+      LOGGER.error("Exception in makeRequest" + e.getLocalizedMessage());
+      throw new UtilsExceptions(e.getCause());
+    }
+  }
+
+  public <T> T makeRequestTest(Parameters parameters) throws UtilsExceptions {
+    if (parameters == null) {
+      LOGGER.error("Parameters object null");
+      throw new UtilsExceptions("Parameters object null");
+    }
+    Authenticator.setDefault(
+        new Authenticator() {
+          @Override
+          protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(
+                configuration.getUser(), configuration.getPass().toCharArray());
+          }
+        });
+
+    try {
+      HttpURLConnection httpcon = (HttpURLConnection) new URL(configuration.getUrl()).openConnection();
+      httpcon.setDoOutput(true);
+      httpcon.setRequestProperty("Content-Type", "application/json");
+      httpcon.setRequestProperty("Accept", "application/json");
+      httpcon.setRequestMethod("POST");
+      httpcon.connect();
+
+      OutputStream stream = httpcon.getOutputStream();
+      String jsonBody = converter.serialization(parameters);
+      LOGGER.debug("JSON body:\n" + jsonBody);
+      stream.write(jsonBody.getBytes());
+      int code = httpcon.getResponseCode();
+      boolean isError = code >= 400 && code <= 500;
+      String text = "";
+      if (isError) {
+        LOGGER.error("Eroror with code: " + code);
+        throw new UtilsExceptions("error");
+      } else {
+        InputStream inputStream = httpcon.getInputStream();
+        if (inputStream != null) {
+          text = new String(inputStream.readAllBytes());
+        }
+      }
+      LOGGER.error("Response from bitcoind\n" + text);
+      Type type = new TypeToken<T>() {}.getType();
+      return (T) converter.deserialization(text, type.getClass());
     } catch (IOException e) {
       LOGGER.error("Exception in makeRequest" + e.getLocalizedMessage());
       throw new UtilsExceptions(e.getCause());

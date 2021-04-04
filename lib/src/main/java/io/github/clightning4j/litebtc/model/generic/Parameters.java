@@ -8,7 +8,7 @@ public class Parameters {
 
   @SerializedName("jsonrpc")
   private String rpcversio = "1.0";
-
+  private int id = (int) ((Math.random() % 100 ) + 1);
   private String method;
   private List<Object> params;
 

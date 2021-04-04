@@ -1,26 +1,26 @@
 package io.github.clightning4j.litebtc.model.generic;
 
-import java.util.HashMap;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Parameters {
 
-    private HashMap<String, Object> params;
+  @SerializedName("jsonrpc")
+  private String rpcversio = "1.0";
+  private String method;
+  private List<Object> params;
 
-    public Parameters() {
-        this.params = new HashMap<>();
-    }
+  public Parameters(String method) {
+    this.method = method;
+    this.params = new ArrayList<>();
+  }
 
-    public void addParameter(String name, Object value) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name argument is invalid: " + name);
-        }
-        this.params.put("name", value);
+  public void addParameter(String name, Object value) {
+    if (name == null || name.isEmpty()) {
+      throw new IllegalArgumentException("Name argument is invalid: " + name);
     }
-
-    public <T> T getParameter(String name) {
-        if (params.containsKey(name)) {
-            return (T) params.get(name);
-        }
-        return null;
-    }
+    this.params.add(value);
+  }
 }

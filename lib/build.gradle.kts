@@ -1,5 +1,4 @@
 plugins {
-    id("org.jmailen.kotlinter") version "3.3.0"
     id("com.github.sherter.google-java-format") version "0.9"
 
     `java-library`
@@ -10,6 +9,9 @@ repositories {
 }
 
 dependencies {
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("ch.qos.logback:logback-core:1.2.3")
+    implementation("org.slf4j:slf4j-api:1.7.25")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.1"))
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.squareup.okhttp3:okhttp")

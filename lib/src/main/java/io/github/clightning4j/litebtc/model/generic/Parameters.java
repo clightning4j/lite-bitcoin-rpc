@@ -1,7 +1,6 @@
 package io.github.clightning4j.litebtc.model.generic;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,7 @@ public class Parameters {
 
   @SerializedName("jsonrpc")
   private String rpcversio = "1.0";
+
   private String method;
   private List<Object> params;
 

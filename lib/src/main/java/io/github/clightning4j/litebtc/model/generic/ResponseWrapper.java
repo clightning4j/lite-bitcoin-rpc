@@ -19,46 +19,21 @@
  */
 package io.github.clightning4j.litebtc.model.generic;
 
-public class Configuration {
+public class ResponseWrapper<T> {
 
-  private String user;
-  private String pass;
-  private String url;
-  private String pathBitcoin;
-  private String cookiePath;
+  private String jsonRpcVersion;
+  private int id;
+  private T result;
 
-  public Configuration(String user, String pass, String url) {
-    this.user = user;
-    this.pass = pass;
-    this.url = url;
+  public String getJsonRpcVersion() {
+    return jsonRpcVersion;
   }
 
-  public Configuration(String cookiePath) {
-    this.cookiePath = cookiePath;
-    this.parseCookie();
+  public int getId() {
+    return id;
   }
 
-  private void parseCookie() {}
-
-  // Getter and setter
-
-  public String getUser() {
-    return user;
-  }
-
-  public String getPass() {
-    return pass;
-  }
-
-  public String getPathBitcoin() {
-    return pathBitcoin;
-  }
-
-  public String getCookiePath() {
-    return cookiePath;
-  }
-
-  public String getUrl() {
-    return url;
+  public T getResult() {
+    return result;
   }
 }

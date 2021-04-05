@@ -1,84 +1,108 @@
+/**
+ * A (another) Lite RPC wrapper for Bitcoin Core RPC 1.0, that permitted to have flexibility into
+ * making the request with different versions of Bitcoin Core without lost compatibility during the
+ * update.
+ *
+ * <p>Copyright (C) 2021 Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ *
+ * <p>This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ */
 package io.github.clightning4j.litebtc.model.bitcoin;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.math.BigInteger;
 
+/** @author */
 public class BlockchainInfo {
-    private String chain;
-    private BigInteger blocks;
-    private BigInteger headers;
-    private String bestblockhash;
-    private BigInteger difficulty;
-    private BigInteger mediantime;
-    private Long verificationprogress;
-    private String chainwork;
-    @SerializedName("size_on_disk")
-    private Long sizeOnDisk;
-    private Boolean pruned;
-    @SerializedName("pruneheight")
-    private BigInteger pruneHeight;
-    @SerializedName("automatic_pruning")
-    private Boolean automaticPruning;
-    @SerializedName("prune_target_size")
-    private BigInteger pruneTargetSize;
-    // add softforks
-    // add bip9_softforks
-    private String warnings;
+  private String chain;
+  private BigInteger blocks;
+  private BigInteger headers;
+  private String bestblockhash;
+  private BigInteger difficulty;
+  private BigInteger mediantime;
+  private Long verificationprogress;
+  private String chainwork;
 
-    public String getChain() {
-        return chain;
-    }
+  @SerializedName("size_on_disk")
+  private Long sizeOnDisk;
 
-    public BigInteger getBlocks() {
-        return blocks;
-    }
+  private Boolean pruned;
 
-    public BigInteger getHeaders() {
-        return headers;
-    }
+  @SerializedName("pruneheight")
+  private BigInteger pruneHeight;
 
-    public String getBestblockhash() {
-        return bestblockhash;
-    }
+  @SerializedName("automatic_pruning")
+  private Boolean automaticPruning;
 
-    public BigInteger getDifficulty() {
-        return difficulty;
-    }
+  @SerializedName("prune_target_size")
+  private BigInteger pruneTargetSize;
+  // add softforks
+  // add bip9_softforks
+  private String warnings;
 
-    public BigInteger getMediantime() {
-        return mediantime;
-    }
+  public String getChain() {
+    return chain;
+  }
 
-    public Long getVerificationprogress() {
-        return verificationprogress;
-    }
+  public BigInteger getBlocks() {
+    return blocks;
+  }
 
-    public String getChainwork() {
-        return chainwork;
-    }
+  public BigInteger getHeaders() {
+    return headers;
+  }
 
-    public Long getSizeOnDisk() {
-        return sizeOnDisk;
-    }
+  public String getBestblockhash() {
+    return bestblockhash;
+  }
 
-    public Boolean getPruned() {
-        return pruned;
-    }
+  public BigInteger getDifficulty() {
+    return difficulty;
+  }
 
-    public BigInteger getPruneHeight() {
-        return pruneHeight;
-    }
+  public BigInteger getMediantime() {
+    return mediantime;
+  }
 
-    public Boolean getAutomaticPruning() {
-        return automaticPruning;
-    }
+  public Long getVerificationprogress() {
+    return verificationprogress;
+  }
 
-    public BigInteger getPruneTargetSize() {
-        return pruneTargetSize;
-    }
+  public String getChainwork() {
+    return chainwork;
+  }
 
-    public String getWarnings() {
-        return warnings;
-    }
+  public Long getSizeOnDisk() {
+    return sizeOnDisk;
+  }
+
+  public Boolean getPruned() {
+    return pruned;
+  }
+
+  public BigInteger getPruneHeight() {
+    return pruneHeight;
+  }
+
+  public Boolean getAutomaticPruning() {
+    return automaticPruning;
+  }
+
+  public BigInteger getPruneTargetSize() {
+    return pruneTargetSize;
+  }
+
+  public String getWarnings() {
+    return warnings;
+  }
 }

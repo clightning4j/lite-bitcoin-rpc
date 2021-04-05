@@ -4,20 +4,20 @@ import com.google.gson.reflect.TypeToken;
 import io.github.clightning4j.litebtc.exceptions.UtilsExceptions;
 import io.github.clightning4j.litebtc.model.generic.Configuration;
 import io.github.clightning4j.litebtc.model.generic.Parameters;
+import io.github.clightning4j.litebtc.model.generic.ResponseWrapper;
 import io.github.clightning4j.litebtc.utils.gson.JsonConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.net.URL;
-import java.net.HttpURLConnection;
 
 public class HttpFactory {
 
@@ -79,18 +79,20 @@ public class HttpFactory {
           message = body.string();
           LOGGER.debug("Response Body\n" + message);
         }
-        throw new UtilsExceptions("Request error: " + response.code() +  "Body: " + message);
+        throw new UtilsExceptions("Request error: " + response.code() + "Body: " + message);
       }
       if (body != null) {
         String responseStr = body.string();
         LOGGER.debug("Response from bitcoind\n" + responseStr);
-        Type type = new TypeToken<T>() {}.getType();
-        return (T) converter.deserialization(responseStr, type.getClass());
+        Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
+        ResponseWrapper<T> wrapper =
+            (ResponseWrapper<T>) converter.deserialization(responseStr, type.getClass());
+        return wrapper.getResult();
       }
       LOGGER.error("body response null");
       throw new UtilsExceptions("body response null");
     } catch (IOException e) {
-      LOGGER.error("Exception in makeRequest" + e.getLocalizedMessage());
+      LOGGER.error("Exception during the request request: " + e.getLocalizedMessage());
       throw new UtilsExceptions(e.getCause());
     }
   }
@@ -110,7 +112,8 @@ public class HttpFactory {
         });
 
     try {
-      HttpURLConnection httpcon = (HttpURLConnection) new URL(configuration.getUrl()).openConnection();
+      HttpURLConnection httpcon =
+          (HttpURLConnection) new URL(configuration.getUrl()).openConnection();
       httpcon.setDoOutput(true);
       httpcon.setRequestProperty("Content-Type", "application/json");
       httpcon.setRequestProperty("Accept", "application/json");

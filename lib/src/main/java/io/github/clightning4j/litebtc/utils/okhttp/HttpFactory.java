@@ -86,7 +86,9 @@ public class HttpFactory {
         LOGGER.debug("Response from bitcoind\n" + responseStr);
         Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
         ResponseWrapper<T> wrapper =
-            (ResponseWrapper<T>) converter.deserialization(responseStr, type.getClass());
+            (ResponseWrapper<T>) converter.deserialization(responseStr, type);
+        String result = converter.serialization(wrapper.getResult());
+        LOGGER.error("Result conversion is: \n" + result);
         return wrapper.getResult();
       }
       LOGGER.error("body response null");

@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  litebtc:
+    build:
+      .
+    volumes:
+      - ./sandbox/:/workdir
+      - ./:/workdir/code

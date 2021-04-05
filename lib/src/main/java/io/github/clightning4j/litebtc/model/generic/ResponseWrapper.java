@@ -21,13 +21,9 @@ package io.github.clightning4j.litebtc.model.generic;
 
 public class ResponseWrapper<T> {
 
-  private String jsonRpcVersion;
   private int id;
   private T result;
-
-  public String getJsonRpcVersion() {
-    return jsonRpcVersion;
-  }
+  private String error;
 
   public int getId() {
     return id;
@@ -35,5 +31,9 @@ public class ResponseWrapper<T> {
 
   public T getResult() {
     return result;
+  }
+
+  public String getError() {
+    return error;
   }
 }

@@ -20,17 +20,18 @@
 package io.github.clightning4j.litebtc.model.bitcoin;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
 
 /** @author */
 public class BlockchainInfo {
   private String chain;
-  private BigInteger blocks;
-  private BigInteger headers;
+  private Long blocks;
+  private Long headers;
   private String bestblockhash;
-  private BigInteger difficulty;
-  private BigInteger mediantime;
-  private Long verificationprogress;
+  private Number difficulty;
+  private Number mediantime;
+  private Number verificationprogress;
   private String chainwork;
 
   @SerializedName("size_on_disk")
@@ -54,11 +55,11 @@ public class BlockchainInfo {
     return chain;
   }
 
-  public BigInteger getBlocks() {
+  public Long getBlocks() {
     return blocks;
   }
 
-  public BigInteger getHeaders() {
+  public Long getHeaders() {
     return headers;
   }
 
@@ -66,15 +67,15 @@ public class BlockchainInfo {
     return bestblockhash;
   }
 
-  public BigInteger getDifficulty() {
+  public Number getDifficulty() {
     return difficulty;
   }
 
-  public BigInteger getMediantime() {
+  public Number getMediantime() {
     return mediantime;
   }
 
-  public Long getVerificationprogress() {
+  public Number getVerificationprogress() {
     return verificationprogress;
   }
 

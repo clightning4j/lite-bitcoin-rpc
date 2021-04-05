@@ -23,40 +23,51 @@ import io.github.clightning4j.litebtc.exceptions.LiteBitcoinRPCException;
 import io.github.clightning4j.litebtc.exceptions.UtilsExceptions;
 import io.github.clightning4j.litebtc.model.generic.Configuration;
 import io.github.clightning4j.litebtc.model.generic.Parameters;
+import io.github.clightning4j.litebtc.utils.gson.JsonConverter;
 import io.github.clightning4j.litebtc.utils.okhttp.HttpFactory;
 
 public class LiteBitcoinRPC {
 
   private Configuration configuration;
+  private JsonConverter converter;
+
+  public LiteBitcoinRPC() {
+    converter = new JsonConverter();
+  }
 
   public LiteBitcoinRPC(Configuration configuration) {
+    this();
     this.configuration = configuration;
     HttpFactory.getInstance().configureHttpClient(configuration);
   }
 
   public LiteBitcoinRPC(String user, String pass, String url) {
+    this();
     this.configuration = new Configuration(user, pass, url);
     HttpFactory.getInstance().configureHttpClient(configuration);
   }
 
   public LiteBitcoinRPC(String cookiePath) {
+    this();
     this.configuration = new Configuration(cookiePath);
     HttpFactory.getInstance().configureHttpClient(configuration);
   }
 
-  public <T> T makeBitcoinRequest(Parameters parameters) throws LiteBitcoinRPCException {
+  public <T> T makeBitcoinRequest(Parameters parameters, Class<T> clazz) throws LiteBitcoinRPCException {
     if (parameters == null) {
       throw new LiteBitcoinRPCException("Function argument null");
     }
     try {
-      return HttpFactory.getInstance().makeRequest(parameters);
+      T result = HttpFactory.getInstance().makeRequest(parameters);
+      String resultStr = converter.serialization(result);
+      return (T) converter.deserialization(resultStr, clazz);
     } catch (UtilsExceptions utilsExceptions) {
       throw new LiteBitcoinRPCException(utilsExceptions.getCause());
     }
   }
 
-  public <T> T makeBitcoinRequest(String parameter) throws LiteBitcoinRPCException {
+  public <T> T makeBitcoinRequest(String parameter, Class<T> clazz) throws LiteBitcoinRPCException {
     Parameters parameters = new Parameters(parameter);
-    return this.makeBitcoinRequest(parameters);
+    return this.makeBitcoinRequest(parameters, clazz);
   }
 }

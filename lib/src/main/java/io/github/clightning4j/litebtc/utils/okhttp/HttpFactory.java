@@ -46,9 +46,10 @@ public class HttpFactory {
     this.configuration = configuration;
     this.client =
         builder
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(2, TimeUnit.MINUTES)
+            .writeTimeout(2, TimeUnit.MINUTES)
+            .readTimeout(2, TimeUnit.MINUTES)
+            .retryOnConnectionFailure(false)
             .build();
     LOGGER.debug("Http client configured");
   }

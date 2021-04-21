@@ -20,7 +20,6 @@
 package io.github.clightning4j.litebtc.model.bitcoin;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.math.BigInteger;
 
 /** @author */

@@ -87,8 +87,6 @@ public class JsonConverter {
     return response;
   }
 
-
-
   protected class MyDateTypeAdapter extends TypeAdapter<Date> {
     @Override
     public void write(JsonWriter out, Date value) throws IOException {

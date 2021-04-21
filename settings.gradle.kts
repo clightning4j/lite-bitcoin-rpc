@@ -9,3 +9,4 @@
 
 rootProject.name = "lite-bitcoin-rpc"
 include("lib")
+project(":lib").name = rootProject.name

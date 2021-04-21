@@ -38,6 +38,10 @@ public class BitcoinAuthenticator implements Authenticator {
   public Request authenticate(@Nullable Route route, @NotNull Response response)
       throws IOException {
     String credential = Credentials.basic(configuration.getUser(), configuration.getPass());
+    // https://github.com/square/retrofit/issues/1561#issuecomment-264245424
+    if (credential.equals(response.request().header("Authorization"))) {
+      return null; // If we already failed with these credentials, don't retry.
+    }
     return response.request().newBuilder().header("Authorization", credential).build();
   }
 }

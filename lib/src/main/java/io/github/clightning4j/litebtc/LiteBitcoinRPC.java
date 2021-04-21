@@ -53,7 +53,8 @@ public class LiteBitcoinRPC {
     HttpFactory.getInstance().configureHttpClient(configuration);
   }
 
-  public <T> T makeBitcoinRequest(Parameters parameters, Class<T> clazz) throws LiteBitcoinRPCException {
+  public <T> T makeBitcoinRequest(Parameters parameters, Class<T> clazz)
+      throws LiteBitcoinRPCException {
     if (parameters == null) {
       throw new LiteBitcoinRPCException("Function argument null");
     }

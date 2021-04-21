@@ -28,7 +28,7 @@ public class LiteBitcoinRPCTest {
   private LiteBitcoinRPC bitcoinRPC;
 
   public LiteBitcoinRPCTest() {
-    this.bitcoinRPC = new LiteBitcoinRPC("vincent", "vincent", "http://127.0.0.1:8332/");
+    this.bitcoinRPC = new LiteBitcoinRPC("sandbox", "sandbox", "http://127.0.0.1:18332/");
   }
 
   @Test
@@ -36,7 +36,7 @@ public class LiteBitcoinRPCTest {
     try {
       BlockchainInfo info =
           bitcoinRPC.makeBitcoinRequest("getblockchaininfo", BlockchainInfo.class);
-      TestCase.assertEquals(info.getChain(), "regste");
+      TestCase.assertEquals(info.getChain(), "regtest");
     } catch (Exception e) {
       e.printStackTrace();
       TestCase.fail(e.getLocalizedMessage());

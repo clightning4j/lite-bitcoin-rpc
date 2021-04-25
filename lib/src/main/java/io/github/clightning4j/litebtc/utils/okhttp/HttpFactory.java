@@ -82,9 +82,10 @@ public class HttpFactory {
           message = body.string();
           LOGGER.debug("Response Body\n" + message);
           ResponseWrapper<T> wrapper =
-                  (ResponseWrapper<T>) converter.deserialization(message, type);
+              (ResponseWrapper<T>) converter.deserialization(message, type);
           if (wrapper.getError() != null) {
-            throw new BitcoinCoreException(wrapper.getError().getCode(), wrapper.getError().getMessage());
+            throw new BitcoinCoreException(
+                wrapper.getError().getCode(), wrapper.getError().getMessage());
           }
         }
         throw new UtilsExceptions("Request error: " + response.code() + "Body: " + message);

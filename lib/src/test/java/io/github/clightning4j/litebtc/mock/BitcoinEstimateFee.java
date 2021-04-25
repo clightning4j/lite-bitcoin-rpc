@@ -7,15 +7,16 @@ import java.util.List;
 
 public class BitcoinEstimateFee {
 
-    @SerializedName("feerate")
-    private Long feeRate;
-    private List<String> errors = new ArrayList<>();
+  @SerializedName("feerate")
+  private Long feeRate;
 
-    public Long getFeeRate() {
-        return feeRate;
-    }
+  private List<String> errors = new ArrayList<>();
 
-    public List<String> getErrors() {
-        return errors;
-    }
+  public Long getFeeRate() {
+    return feeRate;
+  }
+
+  public List<String> getErrors() {
+    return errors;
+  }
 }

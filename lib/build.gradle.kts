@@ -32,7 +32,7 @@ tasks.jacocoTestReport {
         csv.isEnabled = false
         html.isEnabled = false
     }
-    executionData(File("build/jacoco/test.exec"))
+    executionData(File("$buildDir/jacoco/test.exec"))
 }
 
 tasks.test {

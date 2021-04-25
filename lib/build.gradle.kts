@@ -22,7 +22,15 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.google.code.gson:gson:2.8.6")
 
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+}
+
+tasks.test {
+    reports {
+        junitXml.isEnabled = true
+        html.isEnabled = true
+    }
 }
 
 tasks.jacocoTestReport {

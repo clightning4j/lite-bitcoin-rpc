@@ -1,6 +1,7 @@
 package io.github.clightning4j.litebtc.utils.okhttp;
 
 import com.google.gson.reflect.TypeToken;
+import io.github.clightning4j.litebtc.exceptions.BitcoinCoreException;
 import io.github.clightning4j.litebtc.exceptions.UtilsExceptions;
 import io.github.clightning4j.litebtc.model.generic.Configuration;
 import io.github.clightning4j.litebtc.model.generic.Parameters;
@@ -54,7 +55,7 @@ public class HttpFactory {
     LOGGER.debug("Http client configured");
   }
 
-  public <T> T makeRequest(Parameters parameters) throws UtilsExceptions {
+  public <T> T makeRequest(Parameters parameters) throws UtilsExceptions, BitcoinCoreException {
     if (parameters == null) {
       LOGGER.error("Parameters object null");
       throw new UtilsExceptions("Parameters object null");
@@ -88,6 +89,9 @@ public class HttpFactory {
         Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
         ResponseWrapper<T> wrapper =
             (ResponseWrapper<T>) converter.deserialization(responseStr, type);
+        if (wrapper.getError() != null) {
+          throw new BitcoinCoreException(wrapper.getError());
+        }
         String result = converter.serialization(wrapper.getResult());
         LOGGER.error("Result conversion is: \n" + result);
         return wrapper.getResult();

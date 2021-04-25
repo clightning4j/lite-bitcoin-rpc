@@ -19,6 +19,7 @@
  */
 package io.github.clightning4j.litebtc;
 
+import io.github.clightning4j.litebtc.exceptions.BitcoinCoreException;
 import io.github.clightning4j.litebtc.exceptions.LiteBitcoinRPCException;
 import io.github.clightning4j.litebtc.exceptions.UtilsExceptions;
 import io.github.clightning4j.litebtc.model.generic.Configuration;
@@ -54,7 +55,7 @@ public class LiteBitcoinRPC {
   }
 
   public <T> T makeBitcoinRequest(Parameters parameters, Class<T> clazz)
-      throws LiteBitcoinRPCException {
+          throws LiteBitcoinRPCException, BitcoinCoreException {
     if (parameters == null) {
       throw new LiteBitcoinRPCException("Function argument null");
     }
@@ -67,7 +68,7 @@ public class LiteBitcoinRPC {
     }
   }
 
-  public <T> T makeBitcoinRequest(String parameter, Class<T> clazz) throws LiteBitcoinRPCException {
+  public <T> T makeBitcoinRequest(String parameter, Class<T> clazz) throws LiteBitcoinRPCException, BitcoinCoreException {
     Parameters parameters = new Parameters(parameter);
     return this.makeBitcoinRequest(parameters, clazz);
   }

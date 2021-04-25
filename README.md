@@ -1,6 +1,8 @@
 # Lite Bitcoin RPC Wrapper
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/clightning4j/lite-bitcoin-rpc/Java%20CI?style=for-the-badge)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.clightning4j/lite-bitcoin-rpc?style=flat-square)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.clightning4j/lite-bitcoin-rpc?server=https%3A%2F%2Foss.sonatype.org&style=flat-square)
 
 A (another) Lite RPC wrapper for Bitcoin Core RPC 1.0, that permitted to have flexibility into making the request
 with different versions of Bitcoin Core without lost compatibility during the update.

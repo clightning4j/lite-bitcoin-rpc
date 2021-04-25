@@ -19,7 +19,12 @@
  */
 package io.github.clightning4j.litebtc;
 
+import io.github.clightning4j.litebtc.exceptions.BitcoinCoreException;
+import io.github.clightning4j.litebtc.exceptions.LiteBitcoinRPCException;
+import io.github.clightning4j.litebtc.mock.BitcoinEstimateFee;
+import io.github.clightning4j.litebtc.mock.BitcoinUTXO;
 import io.github.clightning4j.litebtc.model.bitcoin.BlockchainInfo;
+import io.github.clightning4j.litebtc.model.generic.Parameters;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -28,7 +33,7 @@ public class LiteBitcoinRPCTest {
   private LiteBitcoinRPC bitcoinRPC;
 
   public LiteBitcoinRPCTest() {
-    this.bitcoinRPC = new LiteBitcoinRPC("sandbox", "sandbox", "http://127.0.0.1:18332/");
+    this.bitcoinRPC = new LiteBitcoinRPC("sandbox", "sandbox", "http://127.0.0.1:18333/");
   }
 
   @Test
@@ -40,6 +45,48 @@ public class LiteBitcoinRPCTest {
     } catch (Exception e) {
       e.printStackTrace();
       TestCase.fail(e.getLocalizedMessage());
+    }
+  }
+
+  @Test
+  public void estimateFeeRateWithError() {
+    Parameters parameters = new Parameters("estimatesmartfee");
+    parameters.addParameter("conf_target", 6);
+    try {
+      BitcoinEstimateFee feee = bitcoinRPC.makeBitcoinRequest(parameters, BitcoinEstimateFee.class);
+      TestCase.assertFalse(feee.getErrors().isEmpty());
+    } catch (LiteBitcoinRPCException | BitcoinCoreException e) {
+      TestCase.fail(e.getMessage());
+    }
+  }
+
+  @Test
+  public void getUTXOWithError() {
+    Parameters parameters = new Parameters("gettxout");
+    parameters.addParameter("txid", "txid");
+    parameters.addParameter("n", 0);
+    try {
+      bitcoinRPC.makeBitcoinRequest(parameters, BitcoinUTXO.class);
+      TestCase.fail("Expected BitcoinCoreException but we not receive it");
+    } catch (LiteBitcoinRPCException e) {
+      TestCase.fail("Wrong exception received (LiteBitcoinRPCException)");
+    } catch (BitcoinCoreException bitcoinCoreException) {
+      TestCase.assertNotNull(bitcoinCoreException);
+    }
+  }
+
+  @Test
+  public void getUTXOWithErrorWithMessage() throws LiteBitcoinRPCException {
+    Parameters parameters = new Parameters("gettxout");
+    parameters.addParameter("txid", "txid");
+    parameters.addParameter("n", 0);
+    try {
+      bitcoinRPC.makeBitcoinRequest(parameters, BitcoinUTXO.class);
+      TestCase.fail("Expected BitcoinCoreException but we not receive it");
+    } catch (BitcoinCoreException bitcoinCoreException) {
+      TestCase.assertEquals(-8, bitcoinCoreException.getCode());
+      TestCase.assertEquals(
+          "txid must be of length 64 (not 4, for 'txid')", bitcoinCoreException.getMessage());
     }
   }
 }

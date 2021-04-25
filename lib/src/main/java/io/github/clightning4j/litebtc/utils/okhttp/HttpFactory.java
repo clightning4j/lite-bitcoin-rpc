@@ -8,13 +8,7 @@ import io.github.clightning4j.litebtc.model.generic.Parameters;
 import io.github.clightning4j.litebtc.model.generic.ResponseWrapper;
 import io.github.clightning4j.litebtc.utils.gson.JsonConverter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import okhttp3.*;
 import org.slf4j.Logger;
@@ -74,24 +68,28 @@ public class HttpFactory {
     try {
       Response response = this.client.newCall(request).execute();
       ResponseBody body = response.body();
+      Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
       if (!response.isSuccessful()) {
         String message = "";
         LOGGER.error("Request error with code: " + response.code());
         if (body != null) {
           message = body.string();
           LOGGER.debug("Response Body\n" + message);
+          ResponseWrapper<T> wrapper =
+              (ResponseWrapper<T>) converter.deserialization(message, type);
+          if (wrapper.getError() != null) {
+            LOGGER.debug("Bitcoin core error with message: " + wrapper.getError().getMessage());
+            throw new BitcoinCoreException(
+                wrapper.getError().getCode(), wrapper.getError().getMessage());
+          }
         }
         throw new UtilsExceptions("Request error: " + response.code() + "Body: " + message);
       }
       if (body != null) {
         String responseStr = body.string();
         LOGGER.debug("Response from bitcoind\n" + responseStr);
-        Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
         ResponseWrapper<T> wrapper =
             (ResponseWrapper<T>) converter.deserialization(responseStr, type);
-        if (wrapper.getError() != null) {
-          throw new BitcoinCoreException(wrapper.getError());
-        }
         String result = converter.serialization(wrapper.getResult());
         LOGGER.error("Result conversion is: \n" + result);
         return wrapper.getResult();
@@ -100,54 +98,6 @@ public class HttpFactory {
       throw new UtilsExceptions("body response null");
     } catch (IOException e) {
       LOGGER.error("Exception during the request request: " + e.getLocalizedMessage());
-      throw new UtilsExceptions(e.getCause());
-    }
-  }
-
-  public <T> T makeRequestTest(Parameters parameters) throws UtilsExceptions {
-    if (parameters == null) {
-      LOGGER.error("Parameters object null");
-      throw new UtilsExceptions("Parameters object null");
-    }
-    Authenticator.setDefault(
-        new Authenticator() {
-          @Override
-          protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(
-                configuration.getUser(), configuration.getPass().toCharArray());
-          }
-        });
-
-    try {
-      HttpURLConnection httpcon =
-          (HttpURLConnection) new URL(configuration.getUrl()).openConnection();
-      httpcon.setDoOutput(true);
-      httpcon.setRequestProperty("Content-Type", "application/json");
-      httpcon.setRequestProperty("Accept", "application/json");
-      httpcon.setRequestMethod("POST");
-      httpcon.connect();
-
-      OutputStream stream = httpcon.getOutputStream();
-      String jsonBody = converter.serialization(parameters);
-      LOGGER.debug("JSON body:\n" + jsonBody);
-      stream.write(jsonBody.getBytes());
-      int code = httpcon.getResponseCode();
-      boolean isError = code >= 400 && code <= 500;
-      String text = "";
-      if (isError) {
-        LOGGER.error("Eroror with code: " + code);
-        throw new UtilsExceptions("error");
-      } else {
-        InputStream inputStream = httpcon.getInputStream();
-        if (inputStream != null) {
-          text = new String(inputStream.readAllBytes());
-        }
-      }
-      LOGGER.error("Response from bitcoind\n" + text);
-      Type type = new TypeToken<T>() {}.getType();
-      return (T) converter.deserialization(text, type.getClass());
-    } catch (IOException e) {
-      LOGGER.error("Exception in makeRequest" + e.getLocalizedMessage());
       throw new UtilsExceptions(e.getCause());
     }
   }

@@ -1,0 +1,31 @@
+name: Integration testing
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Integration testing
+        run: |
+          docker-compose up --exit-code-from litebtc --quiet-pull
+      - name: Upload log
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          path: |
+            **/lite-bitcoin-rpc.log
+            lib/build/reports/tests/test
+          name: ${{ github.run_number }}
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          #files: lib/build/reports/jacoco/*.xml # optional
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: lib/build/test-results/**/*.xml

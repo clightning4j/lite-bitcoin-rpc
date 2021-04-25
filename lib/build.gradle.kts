@@ -2,6 +2,7 @@ plugins {
     id("com.github.sherter.google-java-format") version "0.9"
     `maven-publish`
     signing
+    jacoco
     `java-library`
 }
 group = project.property("GROUP_ID")!!
@@ -21,10 +22,35 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("com.google.code.gson:gson:2.8.6")
 
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.1")
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        xml.destination  = File("$buildDir/reports/jacoco/report.xml")
+        csv.isEnabled = false
+        html.isEnabled = false
+    }
+    executionData(File("$buildDir/jacoco/test.exec"))
+}
+
+tasks.test {
+    reports {
+        junitXml.isEnabled = true
+        html.isEnabled = true
+    }
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks {
+    test {
+        reports {
+            junitXml.isEnabled = true
+            html.isEnabled = true
+        }
+    }
+
     register("fatJar", Jar::class.java) {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("all")
@@ -41,6 +67,7 @@ tasks {
 }
 
 tasks{
+
     create<Jar>("sourcesJar") {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("sources")

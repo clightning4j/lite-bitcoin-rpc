@@ -63,9 +63,9 @@ public class LiteBitcoinRPC {
       T result = HttpFactory.getInstance().makeRequest(parameters);
       String resultStr = converter.serialization(result);
       return (T) converter.deserialization(resultStr, clazz);
-    } catch(BitcoinCoreException bitcoinCoreException){
+    } catch (BitcoinCoreException bitcoinCoreException) {
       throw bitcoinCoreException;
-    }catch (UtilsExceptions utilsExceptions) {
+    } catch (UtilsExceptions utilsExceptions) {
       throw new LiteBitcoinRPCException(utilsExceptions.getCause());
     }
   }

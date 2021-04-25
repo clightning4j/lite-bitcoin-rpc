@@ -8,7 +8,7 @@ jobs:
       - name: Integration testing
         run: |
           docker-compose up --exit-code-from litebtc --quiet-pull
-      - name: Upload lightning log
+      - name: Upload log
         uses: actions/upload-artifact@v2
         if: failure()
         with:

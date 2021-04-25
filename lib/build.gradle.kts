@@ -25,8 +25,20 @@ dependencies {
     testImplementation("junit:junit:4.13")
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        xml.destination  = File("$buildDir/reports/jacoco/report.xml")
+        csv.isEnabled = false
+        html.isEnabled = false
+    }
+    executionData(File("build/jacoco/test.exec"))
+}
 
-
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
 
 tasks {
     test {
@@ -35,7 +47,7 @@ tasks {
             html.isEnabled = true
         }
     }
-    
+
     register("fatJar", Jar::class.java) {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("all")

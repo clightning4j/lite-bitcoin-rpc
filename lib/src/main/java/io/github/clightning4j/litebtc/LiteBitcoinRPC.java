@@ -55,7 +55,7 @@ public class LiteBitcoinRPC {
   }
 
   public <T> T makeBitcoinRequest(Parameters parameters, Class<T> clazz)
-          throws LiteBitcoinRPCException, BitcoinCoreException {
+      throws LiteBitcoinRPCException, BitcoinCoreException {
     if (parameters == null) {
       throw new LiteBitcoinRPCException("Function argument null");
     }
@@ -68,7 +68,8 @@ public class LiteBitcoinRPC {
     }
   }
 
-  public <T> T makeBitcoinRequest(String parameter, Class<T> clazz) throws LiteBitcoinRPCException, BitcoinCoreException {
+  public <T> T makeBitcoinRequest(String parameter, Class<T> clazz)
+      throws LiteBitcoinRPCException, BitcoinCoreException {
     Parameters parameters = new Parameters(parameter);
     return this.makeBitcoinRequest(parameters, clazz);
   }

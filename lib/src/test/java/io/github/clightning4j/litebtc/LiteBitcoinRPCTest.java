@@ -60,13 +60,19 @@ public class LiteBitcoinRPCTest {
     }
   }
 
-  @Test(expected = BitcoinCoreException.class)
-  public void getUTXOWithError() throws BitcoinCoreException, LiteBitcoinRPCException {
+  @Test
+  public void getUTXOWithError() {
     Parameters parameters = new Parameters("gettxout");
     parameters.addParameter("txid", "txid");
     parameters.addParameter("n", 0);
-    bitcoinRPC.makeBitcoinRequest(parameters, BitcoinUTXO.class);
-    TestCase.fail("Expected BitcoinCoreException but we not receive it");
+    try {
+      bitcoinRPC.makeBitcoinRequest(parameters, BitcoinUTXO.class);
+      TestCase.fail("Expected BitcoinCoreException but we not receive it");
+    } catch (LiteBitcoinRPCException e) {
+      TestCase.fail("Wrong exception received (LiteBitcoinRPCException)");
+    } catch (BitcoinCoreException bitcoinCoreException) {
+      TestCase.assertNotNull(bitcoinCoreException);
+    }
   }
 
   @Test
@@ -76,11 +82,11 @@ public class LiteBitcoinRPCTest {
     parameters.addParameter("n", 0);
     try {
       bitcoinRPC.makeBitcoinRequest(parameters, BitcoinUTXO.class);
+      TestCase.fail("Expected BitcoinCoreException but we not receive it");
     } catch (BitcoinCoreException bitcoinCoreException) {
       TestCase.assertEquals(-8, bitcoinCoreException.getCode());
       TestCase.assertEquals(
           "txid must be of length 64 (not 4, for 'txid')", bitcoinCoreException.getMessage());
     }
-    TestCase.fail("Expected BitcoinCoreException but we not receive it");
   }
 }

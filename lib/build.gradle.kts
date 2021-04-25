@@ -2,6 +2,7 @@ plugins {
     id("com.github.sherter.google-java-format") version "0.9"
     `maven-publish`
     signing
+    jacoco
     `java-library`
 }
 group = project.property("GROUP_ID")!!
@@ -24,7 +25,17 @@ dependencies {
     testImplementation("junit:junit:4.13")
 }
 
+
+
+
 tasks {
+    test {
+        reports {
+            junitXml.isEnabled = true
+            html.isEnabled = true
+        }
+    }
+    
     register("fatJar", Jar::class.java) {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("all")
@@ -41,6 +52,7 @@ tasks {
 }
 
 tasks{
+
     create<Jar>("sourcesJar") {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("sources")

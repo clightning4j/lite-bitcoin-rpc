@@ -23,7 +23,7 @@ public class ResponseWrapper<T> {
 
   private int id;
   private T result;
-  private String error;
+  private ResponseError error;
 
   public int getId() {
     return id;
@@ -33,7 +33,20 @@ public class ResponseWrapper<T> {
     return result;
   }
 
-  public String getError() {
+  public ResponseError getError() {
     return error;
+  }
+
+  public class ResponseError {
+    private int code;
+    private String message;
+
+    public int getCode() {
+      return code;
+    }
+
+    public String getMessage() {
+      return message;
+    }
   }
 }

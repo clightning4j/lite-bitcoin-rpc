@@ -74,24 +74,26 @@ public class HttpFactory {
     try {
       Response response = this.client.newCall(request).execute();
       ResponseBody body = response.body();
+      Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
       if (!response.isSuccessful()) {
         String message = "";
         LOGGER.error("Request error with code: " + response.code());
         if (body != null) {
           message = body.string();
           LOGGER.debug("Response Body\n" + message);
+          ResponseWrapper<T> wrapper =
+                  (ResponseWrapper<T>) converter.deserialization(message, type);
+          if (wrapper.getError() != null) {
+            throw new BitcoinCoreException(wrapper.getError().getCode(), wrapper.getError().getMessage());
+          }
         }
         throw new UtilsExceptions("Request error: " + response.code() + "Body: " + message);
       }
       if (body != null) {
         String responseStr = body.string();
         LOGGER.debug("Response from bitcoind\n" + responseStr);
-        Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
         ResponseWrapper<T> wrapper =
             (ResponseWrapper<T>) converter.deserialization(responseStr, type);
-        if (wrapper.getError() != null) {
-          throw new BitcoinCoreException(wrapper.getError());
-        }
         String result = converter.serialization(wrapper.getResult());
         LOGGER.error("Result conversion is: \n" + result);
         return wrapper.getResult();

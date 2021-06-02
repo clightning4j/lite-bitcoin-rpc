@@ -71,14 +71,17 @@ public class HttpFactory {
       Type type = new TypeToken<ResponseWrapper<T>>() {}.getType();
       if (!response.isSuccessful()) {
         String message = "";
-        LOGGER.error("Request error with code: " + response.code());
+        if (LOGGER.isDebugEnabled())
+          LOGGER.debug("Request error with code: " + response.code());
         if (body != null) {
           message = body.string();
-          LOGGER.debug("Response Body\n" + message);
+          if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Response Body", message);
           ResponseWrapper<T> wrapper =
               (ResponseWrapper<T>) converter.deserialization(message, type);
           if (wrapper.getError() != null) {
-            LOGGER.debug("Bitcoin core error with message: " + wrapper.getError().getMessage());
+            if (LOGGER.isDebugEnabled())
+              LOGGER.debug("Bitcoin core error with message: " + wrapper.getError().getMessage());
             throw new BitcoinCoreException(
                 wrapper.getError().getCode(), wrapper.getError().getMessage());
           }
@@ -87,17 +90,20 @@ public class HttpFactory {
       }
       if (body != null) {
         String responseStr = body.string();
-        LOGGER.debug("Response from bitcoind\n" + responseStr);
+        if (LOGGER.isDebugEnabled())
+          LOGGER.debug("Response from bitcoind\n" + responseStr);
         ResponseWrapper<T> wrapper =
             (ResponseWrapper<T>) converter.deserialization(responseStr, type);
         String result = converter.serialization(wrapper.getResult());
-        LOGGER.error("Result conversion is: \n" + result);
+        if (LOGGER.isDebugEnabled())
+          LOGGER.debug("Result conversion is: \n" + result);
         return wrapper.getResult();
       }
-      LOGGER.error("body response null");
+      if (LOGGER.isDebugEnabled())
+        LOGGER.debug("body response is empty");
       throw new UtilsExceptions("body response null");
     } catch (IOException e) {
-      LOGGER.error("Exception during the request request: " + e.getLocalizedMessage());
+      LOGGER.error("Exception during the request request: ", e.getLocalizedMessage());
       throw new UtilsExceptions(e.getCause());
     }
   }

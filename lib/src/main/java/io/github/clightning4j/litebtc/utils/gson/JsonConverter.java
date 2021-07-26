@@ -51,7 +51,9 @@ public class JsonConverter {
 
   public Object deserialization(InputStream inputStream, Type type) throws UtilsExceptions {
     if (inputStream == null || type == null) {
-      throw new IllegalArgumentException("Arguments are/is null");
+      if (type == null)
+        throw new IllegalArgumentException("The type to decode the JSON String is empty");
+      throw new IllegalArgumentException("The input stream is null");
     }
     Object response;
     JsonReader reader;
@@ -71,7 +73,10 @@ public class JsonConverter {
 
   public Object deserialization(String jsonForm, Type type) throws UtilsExceptions {
     if ((jsonForm == null || jsonForm.isEmpty()) || type == null) {
-      throw new IllegalArgumentException("Arguments are/is null");
+      if (type == null)
+        throw new IllegalArgumentException("The type to decode the JSON String is empty");
+      if (jsonForm == null) throw new IllegalArgumentException("The JSON string is null");
+      throw new IllegalArgumentException("The JSON string is empty");
     }
     Object response;
     try {

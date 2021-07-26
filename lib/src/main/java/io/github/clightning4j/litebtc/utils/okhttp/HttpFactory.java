@@ -74,6 +74,10 @@ public class HttpFactory {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Request error with code: " + response.code());
         if (body != null) {
           message = body.string();
+          if (message.isEmpty()) {
+            message = "Error with empty message and error code: " + response.code();
+            throw new BitcoinCoreException(response.code(), message);
+          }
           if (LOGGER.isDebugEnabled()) LOGGER.debug("Response Body", message);
           ResponseWrapper<T> wrapper =
               (ResponseWrapper<T>) converter.deserialization(message, type);

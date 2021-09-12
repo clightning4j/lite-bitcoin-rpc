@@ -1,12 +1,34 @@
-# Lite Bitcoin RPC Wrapper
+<div align="center">
+  <h1>:zap: Lite Bitcoin RPC Wrapper :zap:</h1>
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/clightning4j/lite-bitcoin-rpc/Java%20CI?style=flat-square)
-[![codecov](https://codecov.io/gh/clightning4j/lite-bitcoin-rpc/branch/main/graph/badge.svg?token=KFIW2FXMBJ)](https://codecov.io/gh/clightning4j/lite-bitcoin-rpc)
-![Maven Central](https://img.shields.io/maven-central/v/io.github.clightning4j/lite-bitcoin-rpc?style=flat-square)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.clightning4j/lite-bitcoin-rpc?server=https%3A%2F%2Foss.sonatype.org&style=flat-square)
+  <img src="https://github.com/clightning4j/icons/raw/main/org/ic_launcher/res/mipmap-xxxhdpi/ic_launcher.png" />
 
-A (another) Lite RPC wrapper for Bitcoin Core RPC 1.0, that permitted to have flexibility into making the request
-with different versions of Bitcoin Core without lost compatibility during the update.
+  <p>
+    <strong> :zap: A (another) Lite RPC wrapper for Bitcoin Core RPC 1.0, that permitted to have flexibility into making the request
+with different versions of Bitcoin Core without lost compatibility during the update. :zap: </strong>
+  </p>
+
+  <p>
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/clightning4j/lite-bitcoin-rpc/Java%20CI?style=flat-square">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/maven-central/v/io.github.clightning4j/lite-bitcoin-rpc?style=flat-square">
+   <img alt="GitHub Workflow Status" src="https://img.shields.io/nexus/s/io.github.clightning4j/lite-bitcoin-rpc?server=https%3A%2F%2Foss.sonatype.org&style=flat-square">
+    <a href="https://codecov.io/gh/clightning4j/lite-bitcoin-rpc">
+     <img alt="GitHub Workflow Status" src="https://codecov.io/gh/clightning4j/lite-bitcoin-rpc/branch/main/graph/badge.svg?token=KFIW2FXMBJ">
+   </a>
+
+</p>
+</div>
+
+## Table of Content
+
+- Introduction
+- How Use it
+- Used by
+- Code Style
+- Support
+- License
+
+## Introduction
 
 **Why you developed another one RPC wrapper for Bitcoin Core?**
 
@@ -14,7 +36,8 @@ __All the java implementation for Bitcoin core are old and not longer updated, a
 this means that there are java implementations well tested that support the last version of Bitcoin as well as an old version of Bitcoin Core.__
 
 ## How Use it
- __TODO__
+
+- [btcli4j](https://github.com/clightning4j/btcli4j): A c-lightning plugin that give the possibility to run c-lightning with bitcoin pruning mode.
 
 ## Maven Repository
 __TODO__
@@ -45,6 +68,12 @@ For more details about the JDK support see the [this issue](https://github.com/s
 and to know more about the Google Java code Style see the [this reference](https://google.github.io/styleguide/javaguide.html)
 
 ## Support
+- [3BQ8qbn8hLdmBKEjt1Hj1Z6SiDsnjJurfU](bitcoin:3BQ8qbn8hLdmBKEjt1Hj1Z6SiDsnjJurfU)
+- [liberapay.com/vincenzopalazzo](https://liberapay.com/vincenzopalazzo)
+- [Github support](https://github.com/sponsors/vincenzopalazzo)
+- [buymeacoffee](https://www.buymeacoffee.com/vincenzopalazzo)
+
+P.S: Lightning donation is coming ;-)
 
 ## License
 

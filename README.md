@@ -30,10 +30,10 @@ with different versions of Bitcoin Core without lost compatibility during the up
 
 ## Introduction
 
-**Why you developed another one RPC wrapper for Bitcoin Core?**
+**Why you developed another RPC wrapper for Bitcoin Core?**
 
-__All the java implementation for Bitcoin core are old and not longer updated, and also are written with a specific version of Bitcoin core
-this means that there are java implementations well tested that support the last version of Bitcoin as well as an old version of Bitcoin Core.__
+__All the java implementations for Bitcoin core are old and not longer updated, and also are written with a specific version of Bitcoin core.
+This means that there are java implementations well tested that support the last version of Bitcoin as well as an old version of Bitcoin Core.__
 
 ## How Use it
 
@@ -50,22 +50,22 @@ __TODO__
 > We live in a world where robots can drive a car, so we shouldn't just write code, we should write elegant code.
 
 This repository use [google-java-format](https://github.com/sherter/google-java-format-gradle-plugin) to maintains the code of the repository elegant, so
-before submit the code check the Java format with the following command on the root of the directory
+before submitting the code check the Java format with the following command on the root of the directory
 
 ```bash
 ./gradlew verifyGoogleJavaFormat
 ```
 
-It any error are reported please run the following command to try to fix it
+If any error are reported please run the following command to try to fix it
 
 ```bash
 ./gradlew googleJavaFormat
 ```
 
-p.s: The gradle plugin work with all the JDK version >= 9 (or better with java byte code version compatible with the version  55.0)
+p.s: The gradle plugin works with all the JDK versions >= 9 (or better with java byte code version compatible with the version  55.0)
 
-For more details about the JDK support see the [this issue](https://github.com/sherter/google-java-format-gradle-plugin/issues/58)
-and to know more about the Google Java code Style see the [this reference](https://google.github.io/styleguide/javaguide.html)
+For more details about the JDK support see [this issue](https://github.com/sherter/google-java-format-gradle-plugin/issues/58)
+and to know more about the Google Java code Style see [this reference](https://google.github.io/styleguide/javaguide.html)
 
 ## Support
 - [3BQ8qbn8hLdmBKEjt1Hj1Z6SiDsnjJurfU](bitcoin:3BQ8qbn8hLdmBKEjt1Hj1Z6SiDsnjJurfU)
